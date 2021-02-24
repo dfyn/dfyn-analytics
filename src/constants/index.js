@@ -13,7 +13,7 @@ export const timeframeOptions = {
 // token list urls to fetch tokens from - use for warnings on tokens and pairs
 export const SUPPORTED_LIST_URLS__NO_ENS = [
   // 'https://gateway.ipfs.io/ipns/tokens.dfyn.network',
-  'https://raw.githubusercontent.com/SivaGaneshBhagi/new-host/main/list-token.tokenlist.json',
+  'https://raw.githubusercontent.com/dfyn/new-host/main/list-token.tokenlist.json',
 ]
 
 // hide from overview list

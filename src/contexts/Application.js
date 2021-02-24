@@ -271,14 +271,17 @@ export function useListedTokens() {
       const allFetched = await SUPPORTED_LIST_URLS__NO_ENS.reduce(async (fetchedTokens, url) => {
         const tokensSoFar = await fetchedTokens
         const newTokens = await getTokenList(url)
+        // debugger
         return Promise.resolve([...tokensSoFar, ...newTokens.tokens])
       }, Promise.resolve([]))
+      // debugger
       let formatted = allFetched?.map((t) => t.address.toLowerCase())
       updateSupportedTokens(formatted)
     }
     if (!supportedTokens) {
       fetchList()
     }
+    debugger
   }, [updateSupportedTokens, supportedTokens])
 
   return supportedTokens
