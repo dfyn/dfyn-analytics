@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import tokens from '../../utils/tokens.json'
-import { useListedTokens } from '../../contexts/Application'
+//import tokens from '../../utils/tokens.json'
+
+import { useAllTokensLogo, useListedTokens } from '../../contexts/Application'
 
 import { isAddress } from '../../utils/index.js'
 import PlaceHolder from '../../assets/placeholder.png'
 import EthereumLogo from '../../assets/eth.png'
+import { computeStyles } from '@popperjs/core'
+import { SUPPORTED_LIST_URLS__NO_ENS } from '../../constants'
+import getTokenList from '../../utils/tokenLists'
 
 const BAD_IMAGES = {}
 
@@ -34,9 +38,10 @@ const StyledEthereumLogo = styled.div`
   }
 `
 
-export default function TokenLogo({ address, header = false, size = '24px', ...rest }) {
+export default function TokenLogo({ address, path, header = false, size = '24px', ...rest }) {
   const [error, setError] = useState(false)
   const listedTokens = useListedTokens()
+
   useEffect(() => {
     setError(false)
   }, [address])
@@ -72,17 +77,18 @@ export default function TokenLogo({ address, header = false, size = '24px', ...r
       </StyledEthereumLogo>
     )
   }
-  let token = tokens.filter(t => t.address.toLowerCase() === address.toLowerCase())
-  let path
-  if (token.length > 0) {
-    token = token[0]
-    path = token.logoURI
-  } else {
-    path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
-      address
-    )}/logo.png`
-  }
-
+  // let token = tokens.filter((t) => t.address.toLowerCase() === address.toLowerCase())
+  // console.log('tokens-----------', tokens)
+  // let path
+  // if (token.length > 0) {
+  //   token = token[0]
+  //   path = token.logoURI
+  // } else {
+  //   path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
+  //     address
+  //   )}/logo.png`
+  //   console.log('path', path)
+  // }
 
   return (
     <Inline>
