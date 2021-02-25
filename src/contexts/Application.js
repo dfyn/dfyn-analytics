@@ -300,7 +300,7 @@ export function useSessionStart() {
 }
 
 export function useListedTokens() {
-  const [state, { updateSupportedTokens, updateAllFetchedTokens }] = useApplicationContext()
+  const [state, { updateSupportedTokens }] = useApplicationContext()
   const supportedTokens = state?.[SUPPORTED_TOKENS]
 
   useEffect(() => {
@@ -314,18 +314,35 @@ export function useListedTokens() {
       // debugger
       let formatted = allFetched?.map((t) => t.address.toLowerCase())
       updateSupportedTokens(formatted)
-      updateAllFetchedTokens(allFetched)
     }
     if (!supportedTokens) {
       fetchList()
     }
     //debugger
-  }, [updateSupportedTokens, supportedTokens, updateAllFetchedTokens])
+  }, [updateSupportedTokens, supportedTokens])
   return supportedTokens
 }
 
 export function useAllTokensLogo() {
-  const [state] = useApplicationContext()
-  let allTokens = state?.[FETCHED_TOKENS]
-  return allTokens || []
+  const [state, { updateAllFetchedTokens }] = useApplicationContext()
+  const allFetchedTokens = state?.[FETCHED_TOKENS]
+
+  useEffect(() => {
+    async function fetchList() {
+      const allFetched = await SUPPORTED_LIST_URLS__NO_ENS.reduce(async (fetchedTokens, url) => {
+        const tokensSoFar = await fetchedTokens
+        const newTokens = await getTokenList(url) //
+        // debugger
+        return Promise.resolve([...tokensSoFar, ...newTokens.tokens])
+      }, Promise.resolve([]))
+      // debugger
+
+      updateAllFetchedTokens(allFetched)
+    }
+    if (!allFetchedTokens) {
+      fetchList()
+    }
+    //debugger
+  }, [allFetchedTokens, updateAllFetchedTokens])
+  return allFetchedTokens ? allFetchedTokens : []
 }

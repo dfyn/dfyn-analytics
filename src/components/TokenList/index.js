@@ -135,7 +135,7 @@ function TopTokenList({ tokens, itemMax = 10 }) {
   const below680 = useMedia('(max-width: 680px)')
   const below600 = useMedia('(max-width: 600px)')
 
-  const fetchedTokens = useAllTokensLogo()
+  //const fetchedTokens = useAllTokensLogo()
 
   useEffect(() => {
     setMaxPage(1) // edit this to do modular
@@ -298,22 +298,9 @@ function TopTokenList({ tokens, itemMax = 10 }) {
       <List p={0}>
         {filteredList &&
           filteredList.map((item, index) => {
-            //workaround
-            let token = fetchedTokens.filter((t) => t.address.toLowerCase() === item.id.toLowerCase())
-            let path
-            if (token.length > 0) {
-              token = token[0]
-              path = token.logoURI
-            } else {
-              path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
-                item.id
-              )}/logo.png`
-            }
-            //
-
             return (
               <div key={index}>
-                <ListItem key={index} index={(page - 1) * itemMax + index + 1} item={item} path={path} />
+                <ListItem key={index} index={(page - 1) * itemMax + index + 1} item={item} />
                 <Divider />
               </div>
             )

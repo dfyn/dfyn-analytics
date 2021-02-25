@@ -38,9 +38,11 @@ const StyledEthereumLogo = styled.div`
   }
 `
 
-export default function TokenLogo({ address, path, header = false, size = '24px', ...rest }) {
+export default function TokenLogo({ address, header = false, size = '24px', ...rest }) {
   const [error, setError] = useState(false)
   const listedTokens = useListedTokens()
+
+  const tokens = useAllTokensLogo()
 
   useEffect(() => {
     setError(false)
@@ -77,18 +79,16 @@ export default function TokenLogo({ address, path, header = false, size = '24px'
       </StyledEthereumLogo>
     )
   }
-  // let token = tokens.filter((t) => t.address.toLowerCase() === address.toLowerCase())
-  // console.log('tokens-----------', tokens)
-  // let path
-  // if (token.length > 0) {
-  //   token = token[0]
-  //   path = token.logoURI
-  // } else {
-  //   path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
-  //     address
-  //   )}/logo.png`
-  //   console.log('path', path)
-  // }
+  let token = tokens?.filter((t) => t.address.toLowerCase() === address.toLowerCase())
+  let path
+  if (token.length > 0) {
+    token = token[0]
+    path = token.logoURI
+  } else {
+    path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
+      address
+    )}/logo.png`
+  }
 
   return (
     <Inline>
