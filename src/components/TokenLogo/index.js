@@ -79,7 +79,7 @@ export default function TokenLogo({ address, header = false, size = '24px', ...r
       </StyledEthereumLogo>
     )
   }
-  let token = tokens?.filter((t) => t.address.toLowerCase() === address.toLowerCase())
+  let token = tokens?.filter((t) => t.address?.toLowerCase() === address?.toLowerCase())
   let path
   if (token.length > 0) {
     token = token[0]
