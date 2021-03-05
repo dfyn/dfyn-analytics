@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-//import tokens from '../../utils/tokens.json'
 
 import { useAllTokensLogo, useListedTokens } from '../../contexts/Application'
 
 import { isAddress } from '../../utils/index.js'
 import PlaceHolder from '../../assets/placeholder.png'
 import EthereumLogo from '../../assets/eth.png'
-import { computeStyles } from '@popperjs/core'
-import { SUPPORTED_LIST_URLS__NO_ENS } from '../../constants'
-import getTokenList from '../../utils/tokenLists'
+
 
 const BAD_IMAGES = {}
 
@@ -40,7 +37,6 @@ const StyledEthereumLogo = styled.div`
 
 export default function TokenLogo({ address, header = false, size = '24px', ...rest }) {
   const [error, setError] = useState(false)
-  const listedTokens = useListedTokens()
 
   const tokens = useAllTokensLogo()
 
