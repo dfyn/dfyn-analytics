@@ -22,6 +22,7 @@ if (typeof GOOGLE_ANALYTICS_ID === 'string') {
       ? 'mobileWeb3'
       : 'mobileRegular',
   })
+  ReactGA.pageview(window.location.pathname + window.location.search);
 } else {
   ReactGA.initialize('test', { testMode: true, debug: true })
 }

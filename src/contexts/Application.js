@@ -11,10 +11,12 @@ const UPDATE = 'UPDATE'
 const UPDATE_TIMEFRAME = 'UPDATE_TIMEFRAME'
 const UPDATE_SESSION_START = 'UPDATE_SESSION_START'
 const UPDATED_SUPPORTED_TOKENS = 'UPDATED_SUPPORTED_TOKENS'
+const UPDATED_FETCHED_TOKENS = 'UPDATED_FETCHED_TOKENS'
 const UPDATE_LATEST_BLOCK = 'UPDATE_LATEST_BLOCK'
 const UPDATE_HEAD_BLOCK = 'UPDATE_HEAD_BLOCK'
 
 const SUPPORTED_TOKENS = 'SUPPORTED_TOKENS'
+const FETCHED_TOKENS = 'FETCHED_TOKENS'
 const TIME_KEY = 'TIME_KEY'
 const CURRENCY = 'CURRENCY'
 const SESSION_START = 'SESSION_START'
@@ -75,6 +77,22 @@ function reducer(state, { type, payload }) {
       }
     }
 
+    case UPDATED_SUPPORTED_TOKENS: {
+      const { supportedTokens } = payload
+      return {
+        ...state,
+        [SUPPORTED_TOKENS]: supportedTokens,
+      }
+    }
+
+    case UPDATED_FETCHED_TOKENS: {
+      const { allFetchedTokens } = payload
+      return {
+        ...state,
+        [FETCHED_TOKENS]: allFetchedTokens,
+      }
+    }
+
     default: {
       throw Error(`Unexpected action type in DataContext reducer: '${type}'.`)
     }
@@ -126,6 +144,15 @@ export default function Provider({ children }) {
     })
   }, [])
 
+  const updateAllFetchedTokens = useCallback((allFetchedTokens) => {
+    dispatch({
+      type: UPDATED_FETCHED_TOKENS,
+      payload: {
+        allFetchedTokens,
+      },
+    })
+  }, [])
+
   const updateLatestBlock = useCallback((block) => {
     dispatch({
       type: UPDATE_LATEST_BLOCK,
@@ -154,11 +181,21 @@ export default function Provider({ children }) {
             updateSessionStart,
             updateTimeframe,
             updateSupportedTokens,
+            updateAllFetchedTokens,
             updateLatestBlock,
             updateHeadBlock,
           },
         ],
-        [state, update, updateTimeframe, updateSessionStart, updateSupportedTokens, updateLatestBlock, updateHeadBlock]
+        [
+          state,
+          update,
+          updateTimeframe,
+          updateSessionStart,
+          updateSupportedTokens,
+          updateAllFetchedTokens,
+          updateLatestBlock,
+          updateHeadBlock,
+        ]
       )}
     >
       {children}
@@ -270,7 +307,7 @@ export function useListedTokens() {
     async function fetchList() {
       const allFetched = await SUPPORTED_LIST_URLS__NO_ENS.reduce(async (fetchedTokens, url) => {
         const tokensSoFar = await fetchedTokens
-        const newTokens = await getTokenList(url)
+        const newTokens = await getTokenList(url) //
         // debugger
         return Promise.resolve([...tokensSoFar, ...newTokens.tokens])
       }, Promise.resolve([]))
@@ -281,8 +318,31 @@ export function useListedTokens() {
     if (!supportedTokens) {
       fetchList()
     }
-    debugger
+    //debugger
   }, [updateSupportedTokens, supportedTokens])
-
   return supportedTokens
+}
+
+export function useAllTokensLogo() {
+  const [state, { updateAllFetchedTokens }] = useApplicationContext()
+  const allFetchedTokens = state?.[FETCHED_TOKENS]
+
+  useEffect(() => {
+    async function fetchList() {
+      const allFetched = await SUPPORTED_LIST_URLS__NO_ENS.reduce(async (fetchedTokens, url) => {
+        const tokensSoFar = await fetchedTokens
+        const newTokens = await getTokenList(url) //
+        // debugger
+        return Promise.resolve([...tokensSoFar, ...newTokens.tokens])
+      }, Promise.resolve([]))
+      // debugger
+
+      updateAllFetchedTokens(allFetched)
+    }
+    if (!allFetchedTokens) {
+      fetchList()
+    }
+    //debugger
+  }, [allFetchedTokens, updateAllFetchedTokens])
+  return allFetchedTokens ? allFetchedTokens : []
 }

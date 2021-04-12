@@ -31,7 +31,7 @@ const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
  * @param listUrl list url
  */
 export default async function getTokenList(listUrl: string): Promise<TokenList> {
-  debugger
+  //debugger
   const urls = uriToHttp(listUrl)
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i]

@@ -188,8 +188,9 @@ export async function getHistoricalPairReturns(startDateTimestamp, currentPairDa
 
   const shareValues = await getShareValueOverTime(currentPairData.id, dayTimestamps)
   const shareValuesFormatted = {}
-  shareValues?.map((share) => {
+  shareValues.map((share) => {
     shareValuesFormatted[share.timestamp] = share
+    return
   })
 
   // set the default position and data

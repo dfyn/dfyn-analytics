@@ -18,12 +18,6 @@ const TitleWrapper = styled.div`
   z-index: 10;
 `
 
-const UniIcon = styled(Link)`
-  transition: transform 0.3s ease;
-  :hover {
-    transform: rotate(-5deg);
-  }
-`
 
 export default function Title() {
   const history = useHistory()

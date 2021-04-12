@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import tokens from '../../utils/tokens.json'
-import { useListedTokens } from '../../contexts/Application'
+
+import { useAllTokensLogo, useListedTokens } from '../../contexts/Application'
 
 import { isAddress } from '../../utils/index.js'
 import PlaceHolder from '../../assets/placeholder.png'
 import EthereumLogo from '../../assets/eth.png'
+
 
 const BAD_IMAGES = {}
 
@@ -36,7 +37,9 @@ const StyledEthereumLogo = styled.div`
 
 export default function TokenLogo({ address, header = false, size = '24px', ...rest }) {
   const [error, setError] = useState(false)
-  const listedTokens = useListedTokens()
+
+  const tokens = useAllTokensLogo()
+
   useEffect(() => {
     setError(false)
   }, [address])
@@ -72,7 +75,7 @@ export default function TokenLogo({ address, header = false, size = '24px', ...r
       </StyledEthereumLogo>
     )
   }
-  let token = tokens.filter(t => t.address.toLowerCase() === address.toLowerCase())
+  let token = tokens?.filter((t) => t.address?.toLowerCase() === address?.toLowerCase())
   let path
   if (token.length > 0) {
     token = token[0]
@@ -82,7 +85,6 @@ export default function TokenLogo({ address, header = false, size = '24px', ...r
       address
     )}/logo.png`
   }
-
 
   return (
     <Inline>

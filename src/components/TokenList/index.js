@@ -134,6 +134,8 @@ function TopTokenList({ tokens, itemMax = 10 }) {
   const below680 = useMedia('(max-width: 680px)')
   const below600 = useMedia('(max-width: 600px)')
 
+  //const fetchedTokens = useAllTokensLogo()
+
   useEffect(() => {
     setMaxPage(1) // edit this to do modular
     setPage(1)
@@ -176,13 +178,13 @@ function TopTokenList({ tokens, itemMax = 10 }) {
     )
   }, [formattedTokens, itemMax, page, sortDirection, sortedColumn])
 
-  const ListItem = ({ item, index }) => {
+  const ListItem = ({ item, index, path }) => {
     return (
       <DashGrid style={{ height: '48px' }} focus={true}>
         <DataText area="name" fontWeight="500">
           <Row>
             {!below680 && <div style={{ marginRight: '1rem', width: '10px' }}>{index}</div>}
-            <TokenLogo address={item.id} />
+            <TokenLogo address={item.id} path={path} />
             <CustomLink style={{ marginLeft: '16px', whiteSpace: 'nowrap' }} to={'/token/' + item.id}>
               <FormattedName
                 text={below680 ? item.symbol : item.name}

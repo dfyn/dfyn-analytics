@@ -634,7 +634,6 @@ export function useAllPairsInUniswap() {
 export function useAllTokensInUniswap() {
   const [state] = useGlobalDataContext()
   let allTokens = state?.allTokens
-
   return allTokens || []
 }
 
