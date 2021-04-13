@@ -4,8 +4,8 @@ import dayjs from 'dayjs'
 import { getShareValueOverTime } from '.'
 
 export const priceOverrides = [
-  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', // USDC
-  '0x6b175474e89094c44da98b954eedeac495271d0f', // DAI
+  '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', // USDC
+  '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063', // DAI
 ]
 
 interface ReturnMetrics {
@@ -39,10 +39,10 @@ function formatPricesForEarlyTimestamps(position): Position {
       position.token1PriceUSD = 1
     }
     // WETH price
-    if (position.pair?.token0.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
+    if (position.pair?.token0.id === '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619') {
       position.token0PriceUSD = 203
     }
-    if (position.pair?.token1.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
+    if (position.pair?.token1.id === '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619') {
       position.token1PriceUSD = 203
     }
   }
@@ -74,8 +74,8 @@ async function getPrincipalForUserPerPair(user: string, pairAddress: string) {
     } else {
       usd += parseFloat(mint.amountUSD)
     }
-    amount0 += parseFloat(mint.amount0)
-    amount1 += parseFloat(mint.amount1)
+    amount0 += amount0 + parseFloat(mint.amount0)
+    amount1 += amount1 + parseFloat(mint.amount1)
   }
 
   for (const index in results.data.burns) {
@@ -89,11 +89,11 @@ async function getPrincipalForUserPerPair(user: string, pairAddress: string) {
     } else if (priceOverrides.includes(burnToken1) && burn.timestamp < PRICE_DISCOVERY_START_TIMESTAMP) {
       usd += parseFloat(burn.amount1) * 2
     } else {
-      usd -= parseFloat(burn.amountUSD)
+      usd -= parseFloat(results.data.burns[index].amountUSD)
     }
 
-    amount0 -= parseFloat(burn.amount0)
-    amount1 -= parseFloat(burn.amount1)
+    amount0 -= parseFloat(results.data.burns[index].amount0)
+    amount1 -= parseFloat(results.data.burns[index].amount1)
   }
 
   return { usd, amount0, amount1 }
@@ -189,7 +189,8 @@ export async function getHistoricalPairReturns(startDateTimestamp, currentPairDa
   const shareValues = await getShareValueOverTime(currentPairData.id, dayTimestamps)
   const shareValuesFormatted = {}
   shareValues.map((share) => {
-    return (shareValuesFormatted[share.timestamp] = share)
+    shareValuesFormatted[share.timestamp] = share
+    return
   })
 
   // set the default position and data

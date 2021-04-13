@@ -861,12 +861,12 @@ export function useTokenPriceData(tokenAddress, timeWindow, interval = 3600) {
 
 export function useAllTokenData() {
   const [state] = useTokenDataContext()
-
+  return state
   // filter out for only addresses
-  return Object.keys(state)
-    .filter((key) => key !== 'combinedVol')
-    .reduce((res, key) => {
-      res[key] = state[key]
-      return res
-    }, {})
+  // return Object.keys(state)
+  //   .filter((key) => key !== 'combinedVol')
+  //   .reduce((res, key) => {
+  //     res[key] = state[key]
+  //     return res
+  //   }, {})
 }

@@ -9,13 +9,14 @@ import styled from 'styled-components'
 import { CustomLink } from '../Link'
 import { Divider } from '../../components'
 import { withRouter } from 'react-router-dom'
-import { formattedNum, formattedPercent } from '../../utils'
+import { formattedNum, formattedPercent, isAddress } from '../../utils'
 import DoubleTokenLogo from '../DoubleLogo'
 import FormattedName from '../FormattedName'
 import QuestionHelper from '../QuestionHelper'
 import { TYPE } from '../../Theme'
 import { PAIR_BLACKLIST } from '../../constants'
 import { AutoColumn } from '../Column'
+import { useAllTokensLogo } from '../../contexts/Application'
 
 dayjs.extend(utc)
 
@@ -153,6 +154,8 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = fals
   const [sortDirection, setSortDirection] = useState(true)
   const [sortedColumn, setSortedColumn] = useState(SORT_FIELD.LIQ)
 
+  const fetchedTokens = useAllTokensLogo()
+
   useEffect(() => {
     setMaxPage(1) // edit this to do modular
     setPage(1)
@@ -197,6 +200,28 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = fals
         true
       )
 
+      let token0 = fetchedTokens?.filter((t) => t?.address?.toLowerCase() === pairData?.token0.id.toLowerCase())
+      let path0
+      if (token0.length > 0) {
+        token0 = token0[0]
+        path0 = token0.logoURI
+      } else {
+        path0 = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
+          pairData?.token0.id
+        )}/logo.png`
+      }
+
+      let token1 = fetchedTokens?.filter((t) => t?.address?.toLowerCase() === pairData?.token1.id.toLowerCase())
+      let path1
+      if (token1.length > 0) {
+        token1 = token1[0]
+        path1 = token1.logoURI
+      } else {
+        path1 = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
+          pairData?.token1.id
+        )}/logo.png`
+      }
+
       return (
         <DashGrid style={{ height: '48px' }} disbaleLinks={disbaleLinks} focus={true}>
           <DataText area="name" fontWeight="500">
@@ -205,6 +230,8 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = fals
               size={below600 ? 16 : 20}
               a0={pairData.token0.id}
               a1={pairData.token1.id}
+              p0={path0}
+              p1={path1}
               margin={!below740}
             />
             <CustomLink style={{ marginLeft: '20px', whiteSpace: 'nowrap' }} to={'/pair/' + pairAddress} color={color}>

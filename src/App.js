@@ -18,7 +18,7 @@ import AccountLookup from './pages/AccountLookup'
 import LocalLoader from './components/LocalLoader'
 import { useLatestBlocks } from './contexts/Application'
 import GoogleAnalyticsReporter from './components/analytics/GoogleAnalyticsReporter'
-import { PAIR_BLACKLIST, TOKEN_BLACKLIST } from './constants'
+import { OVERVIEW_TOKEN_BLACKLIST, PAIR_BLACKLIST, TOKEN_BLACKLIST } from './constants'
 
 const AppWrapper = styled.div`
   position: relative;
@@ -102,6 +102,12 @@ function App() {
   const globalChartData = useGlobalChartData()
   const [latestBlock, headBlock] = useLatestBlocks()
 
+  console.log({
+    headBlock,
+    latestBlock,
+    BLOCK_DIFFERENCE_THRESHOLD,
+  })
+
   // show warning
   const showWarning = headBlock && latestBlock ? headBlock - latestBlock > BLOCK_DIFFERENCE_THRESHOLD : false
 
@@ -115,22 +121,22 @@ function App() {
             </WarningBanner>
           </WarningWrapper>
         )}
-        {globalData &&
+        {latestBlock &&
+        globalData &&
         Object.keys(globalData).length > 0 &&
         globalChartData &&
         Object.keys(globalChartData).length > 0 ? (
           <BrowserRouter>
-            <Route component={GoogleAnalyticsReporter} />
             <Switch>
               <Route
                 exacts
                 strict
                 path="/token/:tokenAddress"
                 render={({ match }) => {
-                  if (
-                    isAddress(match.params.tokenAddress.toLowerCase()) &&
-                    !Object.keys(TOKEN_BLACKLIST).includes(match.params.tokenAddress.toLowerCase())
-                  ) {
+                  if (OVERVIEW_TOKEN_BLACKLIST.includes(match.params.tokenAddress.toLowerCase())) {
+                    return <Redirect to="/home" />
+                  }
+                  if (isAddress(match.params.tokenAddress.toLowerCase())) {
                     return (
                       <LayoutWrapper savedOpen={savedOpen} setSavedOpen={setSavedOpen}>
                         <TokenPage address={match.params.tokenAddress.toLowerCase()} />
@@ -146,10 +152,10 @@ function App() {
                 strict
                 path="/pair/:pairAddress"
                 render={({ match }) => {
-                  if (
-                    isAddress(match.params.pairAddress.toLowerCase()) &&
-                    !Object.keys(PAIR_BLACKLIST).includes(match.params.pairAddress.toLowerCase())
-                  ) {
+                  if (PAIR_BLACKLIST.includes(match.params.pairAddress.toLowerCase())) {
+                    return <Redirect to="/home" />
+                  }
+                  if (isAddress(match.params.pairAddress.toLowerCase())) {
                     return (
                       <LayoutWrapper savedOpen={savedOpen} setSavedOpen={setSavedOpen}>
                         <PairPage pairAddress={match.params.pairAddress.toLowerCase()} />

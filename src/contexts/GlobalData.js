@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useReducer, useMemo, useCallback, useEffect, useState } from 'react'
+import { timeframeOptions, SUPPORTED_LIST_URLS__NO_ENS } from '../constants'
 import { client } from '../apollo/client'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import getTokenList from '../utils/tokenLists'
+import { healthClient } from '../apollo/client'
+import { SUBGRAPH_HEALTH } from '../apollo/queries'
 import { useTimeframe } from './Application'
 import {
   getPercentChange,
@@ -30,6 +34,21 @@ const ETH_PRICE_KEY = 'ETH_PRICE_KEY'
 const UPDATE_ALL_PAIRS_IN_UNISWAP = 'UPDAUPDATE_ALL_PAIRS_IN_UNISWAPTE_TOP_PAIRS'
 const UPDATE_ALL_TOKENS_IN_UNISWAP = 'UPDATE_ALL_TOKENS_IN_UNISWAP'
 const UPDATE_TOP_LPS = 'UPDATE_TOP_LPS'
+
+const UPDATE_TIMEFRAME = 'UPDATE_TIMEFRAME'
+const UPDATE_SESSION_START = 'UPDATE_SESSION_START'
+const UPDATED_SUPPORTED_TOKENS = 'UPDATED_SUPPORTED_TOKENS'
+const UPDATED_FETCHED_TOKENS = 'UPDATED_FETCHED_TOKENS'
+const UPDATE_LATEST_BLOCK = 'UPDATE_LATEST_BLOCK'
+const UPDATE_HEAD_BLOCK = 'UPDATE_HEAD_BLOCK'
+
+const SUPPORTED_TOKENS = 'SUPPORTED_TOKENS'
+const FETCHED_TOKENS = 'FETCHED_TOKENS'
+const TIME_KEY = 'TIME_KEY'
+const CURRENCY = 'CURRENCY'
+const SESSION_START = 'SESSION_START'
+const LATEST_BLOCK = 'LATEST_BLOCK'
+const HEAD_BLOCK = 'HEAD_BLOCK'
 
 const offsetVolumes = [
   '0x9ea3b5b4ec044b70375236a281986106457b20ef',
@@ -113,6 +132,11 @@ function reducer(state, { type, payload }) {
   }
 }
 
+const INITIAL_STATE = {
+  CURRENCY: 'USD',
+  TIME_KEY: timeframeOptions.ALL_TIME,
+}
+
 export default function Provider({ children }) {
   const [state, dispatch] = useReducer(reducer, {})
   const update = useCallback((data) => {
@@ -120,6 +144,62 @@ export default function Provider({ children }) {
       type: UPDATE,
       payload: {
         data,
+      },
+    })
+  }, [])
+
+  // global time window for charts - see timeframe options in constants
+  const updateTimeframe = useCallback((newTimeFrame) => {
+    dispatch({
+      type: UPDATE_TIMEFRAME,
+      payload: {
+        newTimeFrame,
+      },
+    })
+  }, [])
+
+  // used for refresh button
+  const updateSessionStart = useCallback((timestamp) => {
+    dispatch({
+      type: UPDATE_SESSION_START,
+      payload: {
+        timestamp,
+      },
+    })
+  }, [])
+
+  const updateSupportedTokens = useCallback((supportedTokens) => {
+    dispatch({
+      type: UPDATED_SUPPORTED_TOKENS,
+      payload: {
+        supportedTokens,
+      },
+    })
+  }, [])
+
+  const updateAllFetchedTokens = useCallback((allFetchedTokens) => {
+    dispatch({
+      type: UPDATED_FETCHED_TOKENS,
+      payload: {
+        allFetchedTokens,
+      },
+    })
+  }, [])
+
+  const updateLatestBlock = useCallback((block) => {
+    dispatch({
+      type: UPDATE_LATEST_BLOCK,
+      payload: {
+        block,
+      },
+    })
+  }, [])
+
+  const updateHeadBlock = useCallback((block) => {
+    dispatch({
+      type: UPDATE_HEAD_BLOCK,
+      payload: {
+        block,
       },
     })
   }, [])
@@ -180,6 +260,7 @@ export default function Provider({ children }) {
       },
     })
   }, [])
+
   return (
     <GlobalDataContext.Provider
       value={useMemo(
@@ -211,6 +292,150 @@ export default function Provider({ children }) {
     </GlobalDataContext.Provider>
   )
 }
+
+// export function useLatestBlocks() {
+//   const [state, { updateLatestBlock, updateHeadBlock }] = useApplicationContext()
+
+//   const latestBlock = state?.[LATEST_BLOCK]
+//   const headBlock = state?.[HEAD_BLOCK]
+
+//   useEffect(() => {
+//     async function fetch() {
+//       try {
+//         const res = await healthClient.query({
+//           query: SUBGRAPH_HEALTH,
+//         })
+//         console.log(res)
+//         const syncedBlock = res.data.indexingStatusForCurrentVersion.chains[0].latestBlock.number
+//         const headBlock = res.data.indexingStatusForCurrentVersion.chains[0].chainHeadBlock.number
+//         if (syncedBlock && headBlock) {
+//           updateLatestBlock(syncedBlock)
+//           updateHeadBlock(headBlock)
+//         }
+//       } catch (e) {
+//         console.log(e)
+//       }
+//     }
+//     if (!latestBlock) {
+//       fetch()
+//     }
+//   }, [latestBlock, updateHeadBlock, updateLatestBlock])
+
+//   return [latestBlock, headBlock]
+// }
+
+// export function useCurrentCurrency() {
+//   const [state, { update }] = useApplicationContext()
+//   const toggleCurrency = useCallback(() => {
+//     if (state.currency === 'ETH') {
+//       update('USD')
+//     } else {
+//       update('ETH')
+//     }
+//   }, [state, update])
+//   return [state[CURRENCY], toggleCurrency]
+// }
+
+// // export function useTimeframe() {
+// //   const [state, { updateTimeframe }] = useApplicationContext()
+// //   const activeTimeframe = state?.[TIME_KEY]
+// //   return [activeTimeframe, updateTimeframe]
+// // }
+
+// export function useStartTimestamp() {
+//   const [activeWindow] = useTimeframe()
+//   const [startDateTimestamp, setStartDateTimestamp] = useState()
+
+//   // monitor the old date fetched
+//   useEffect(() => {
+//     let startTime =
+//       dayjs
+//         .utc()
+//         .subtract(
+//           1,
+//           activeWindow === timeframeOptions.week ? 'week' : activeWindow === timeframeOptions.ALL_TIME ? 'year' : 'year'
+//         )
+//         .startOf('day')
+//         .unix() - 1
+//     // if we find a new start time less than the current startrtime - update oldest pooint to fetch
+//     setStartDateTimestamp(startTime)
+//   }, [activeWindow, startDateTimestamp])
+
+//   return startDateTimestamp
+// }
+
+// // keep track of session length for refresh ticker
+// export function useSessionStart() {
+//   const [state, { updateSessionStart }] = useApplicationContext()
+//   const sessionStart = state?.[SESSION_START]
+
+//   useEffect(() => {
+//     if (!sessionStart) {
+//       updateSessionStart(Date.now())
+//     }
+//   })
+
+//   const [seconds, setSeconds] = useState(0)
+
+//   useEffect(() => {
+//     let interval = null
+//     interval = setInterval(() => {
+//       setSeconds(Date.now() - sessionStart ?? Date.now())
+//     }, 1000)
+
+//     return () => clearInterval(interval)
+//   }, [seconds, sessionStart])
+
+//   return parseInt(seconds / 1000)
+// }
+
+// export function useListedTokens() {
+//   const [state, { updateSupportedTokens }] = useApplicationContext()
+//   const supportedTokens = state?.[SUPPORTED_TOKENS]
+
+//   useEffect(() => {
+//     async function fetchList() {
+//       const allFetched = await SUPPORTED_LIST_URLS__NO_ENS.reduce(async (fetchedTokens, url) => {
+//         const tokensSoFar = await fetchedTokens
+//         const newTokens = await getTokenList(url) //
+//         // debugger
+//         return Promise.resolve([...tokensSoFar, ...newTokens.tokens])
+//       }, Promise.resolve([]))
+//       // debugger
+//       let formatted = allFetched?.map((t) => t.address.toLowerCase())
+//       updateSupportedTokens(formatted)
+//     }
+//     if (!supportedTokens) {
+//       fetchList()
+//     }
+//     //debugger
+//   }, [updateSupportedTokens, supportedTokens])
+//   return supportedTokens
+// }
+
+// export function useAllTokensLogo() {
+//   const [state, { updateAllFetchedTokens }] = useApplicationContext()
+//   const allFetchedTokens = state?.[FETCHED_TOKENS]
+
+//   useEffect(() => {
+//     async function fetchList() {
+//       const allFetched = await SUPPORTED_LIST_URLS__NO_ENS.reduce(async (fetchedTokens, url) => {
+//         const tokensSoFar = await fetchedTokens
+//         const newTokens = await getTokenList(url) //
+//         // debugger
+//         return Promise.resolve([...tokensSoFar, ...newTokens.tokens])
+//       }, Promise.resolve([]))
+//       // debugger
+
+//       updateAllFetchedTokens(allFetched)
+//     }
+//     if (!allFetchedTokens) {
+//       fetchList()
+//     }
+//     //debugger
+//   }, [allFetchedTokens, updateAllFetchedTokens])
+//   return allFetchedTokens ? allFetchedTokens : []
+// }
 
 /**
  * Gets all the global data for the overview page.
@@ -277,8 +502,8 @@ async function getGlobalData(ethPrice, oldEthPrice) {
     if (data && oneDayData && twoDayData && twoWeekData) {
       let [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
         data.totalVolumeUSD,
-        oneDayData.totalVolumeUSD,
-        twoDayData.totalVolumeUSD
+        oneDayData.totalVolumeUSD ? oneDayData.totalVolumeUSD : 0,
+        twoDayData.totalVolumeUSD ? twoDayData.totalVolumeUSD : 0
       )
 
       const [oneWeekVolume, weeklyVolumeChange] = get2DayPercentChange(

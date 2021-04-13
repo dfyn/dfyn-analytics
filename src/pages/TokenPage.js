@@ -207,7 +207,7 @@ function TokenPage({ address, history }) {
               style={{ width: 'fit-content' }}
               color={backgroundColor}
               external
-              href={'https://etherscan.io/address/' + address}
+              href={'https://explorer-mainnet.maticvigil.com/address/' + address}
             >
               <Text style={{ marginLeft: '.15rem' }} fontSize={'14px'} fontWeight={400}>
                 ({address.slice(0, 8) + '...' + address.slice(36, 42)})
@@ -339,7 +339,7 @@ function TokenPage({ address, history }) {
                     </RowBetween>
                     <RowBetween align="flex-end">
                       <TYPE.main fontSize={'1.5rem'} lineHeight={1} fontWeight={500}>
-                        {oneDayTxns ? localNumber(oneDayTxns) : 0}
+                        {oneDayTxns ? localNumber(oneDayTxns) : oneDayTxns === 0 ? 0 : '-'}
                       </TYPE.main>
                       <TYPE.main>{txnChangeFormatted}</TYPE.main>
                     </RowBetween>
@@ -421,7 +421,7 @@ function TokenPage({ address, history }) {
                   </Column>
                   <ButtonLight color={backgroundColor}>
                     <Link color={backgroundColor} external href={'https://etherscan.io/address/' + address}>
-                      View on Etherscan ↗
+                      View on Explorer ↗
                     </Link>
                   </ButtonLight>
                 </TokenDetailsLayout>

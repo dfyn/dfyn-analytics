@@ -40,16 +40,18 @@ export function getTimeframe(timeWindow) {
 export function getPoolLink(token0Address, token1Address = null, remove = false) {
   if (!token1Address) {
     return (
-      `https://uniswap.exchange/` +
+      `https://exchange.dfyn.network/#/` +
       (remove ? `remove` : `add`) +
-      `/${token0Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token0Address}/${'ETH'}`
+      `/${
+        token0Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token0Address
+      }/${'ETH'}`
     )
   } else {
     return (
-      `https://uniswap.exchange/` +
+      `https://exchange.dfyn.network/#/` +
       (remove ? `remove` : `add`) +
-      `/${token0Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token0Address}/${
-        token1Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token1Address
+      `/${token0Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token0Address}/${
+        token1Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token1Address
       }`
     )
   }
@@ -57,20 +59,22 @@ export function getPoolLink(token0Address, token1Address = null, remove = false)
 
 export function getSwapLink(token0Address, token1Address = null) {
   if (!token1Address) {
-    return `https://uniswap.exchange/swap?inputCurrency=${token0Address}`
+    return `https://exchange.dfyn.network/#/swap?inputCurrency=${token0Address}`
   } else {
-    return `https://uniswap.exchange/swap?inputCurrency=${
-      token0Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token0Address
-    }&outputCurrency=${token1Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token1Address}`
+    return `https://exchange.dfyn.network/#/swap?inputCurrency=${
+      token0Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token0Address
+    }&outputCurrency=${
+      token1Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token1Address
+    }`
   }
 }
 
 export function getMiningPoolLink(token0Address) {
-  return `https://app.uniswap.org/#/uni/ETH/${token0Address}`
+  return `https://app.dfyn.network/#/uni/ETH/${token0Address}`
 }
 
 export function getUniswapAppLink(linkVariable) {
-  let baseUniswapUrl = 'https://app.uniswap.org/#/uni'
+  let baseUniswapUrl = 'https://app.dfyn.network/#/uni'
   if (!linkVariable) {
     return baseUniswapUrl
   }
@@ -118,7 +122,6 @@ export async function splitQuery(query, localClient, vars, list, skipCount = 100
   let fetchedData = {}
   let allFound = false
   let skip = 0
-
   while (!allFound) {
     let end = list.length
     if (skip + skipCount < list.length) {
@@ -155,7 +158,7 @@ export async function getBlockFromTimestamp(timestamp) {
       timestampFrom: timestamp,
       timestampTo: timestamp + 600,
     },
-    fetchPolicy: 'cache-first',
+    // fetchPolicy: 'cache-first',
   })
   return result?.data?.blocks?.[0]?.number
 }
@@ -171,7 +174,6 @@ export async function getBlocksFromTimestamps(timestamps, skipCount = 500) {
   if (timestamps?.length === 0) {
     return []
   }
-
   let fetchedData = await splitQuery(GET_BLOCKS, blockClient, [], timestamps, skipCount)
 
   let blocks = []
@@ -188,27 +190,27 @@ export async function getBlocksFromTimestamps(timestamps, skipCount = 500) {
   return blocks
 }
 
-// export async function getLiquidityTokenBalanceOvertime(account, timestamps) {
-//   // get blocks based on timestamps
-//   const blocks = await getBlocksFromTimestamps(timestamps)
+export async function getLiquidityTokenBalanceOvertime(account, timestamps) {
+  // get blocks based on timestamps
+  const blocks = await getBlocksFromTimestamps(timestamps)
 
-//   // get historical share values with time travel queries
-//   let result = await client.query({
-//     query: SHARE_VALUE(account, blocks),
-//     fetchPolicy: 'cache-first',
-//   })
+  // get historical share values with time travel queries
+  let result = await client.query({
+    query: SHARE_VALUE(account, blocks),
+    fetchPolicy: 'cache-first',
+  })
 
-//   let values = []
-//   for (var row in result?.data) {
-//     let timestamp = row.split('t')[1]
-//     if (timestamp) {
-//       values.push({
-//         timestamp,
-//         balance: 0,
-//       })
-//     }
-//   }
-// }
+  let values = []
+  for (var row in result?.data) {
+    let timestamp = row.split('t')[1]
+    if (timestamp) {
+      values.push({
+        timestamp,
+        balance: 0,
+      })
+    }
+  }
+}
 
 /**
  * @notice Example query using time travel queries
@@ -303,10 +305,10 @@ export const setThemeColor = (theme) => document.documentElement.style.setProper
 export const Big = (number) => new BigNumber(number)
 
 export const urls = {
-  showTransaction: (tx) => `https://etherscan.io/tx/${tx}/`,
-  showAddress: (address) => `https://www.etherscan.io/address/${address}/`,
-  showToken: (address) => `https://www.etherscan.io/token/${address}/`,
-  showBlock: (block) => `https://etherscan.io/block/${block}/`,
+  showTransaction: (tx) => `https://explorer-mainnet.maticvigil.com/tx/${tx}/`,
+  showAddress: (address) => `https://explorer-mainnet.maticvigil.com/address/${address}/`,
+  showToken: (address) => `https://explorer-mainnet.maticvigil.com/tokens/${address}/`,
+  showBlock: (block) => `https://explorer-mainnet.maticvigil.com/blocks/${block}/`,
 }
 
 export const formatTime = (unix) => {
@@ -334,15 +336,11 @@ export const formatNumber = (num) => {
 }
 
 // using a currency library here in case we want to add more in future
-export const formatDollarAmount = (num, digits) => {
-  const formatter = new Intl.NumberFormat([], {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  })
-  return formatter.format(num)
-}
+var priceFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+})
 
 export const toSignificant = (number, significantDigits) => {
   Decimal.set({ precision: significantDigits + 1, rounding: Decimal.ROUND_UP })
@@ -372,18 +370,21 @@ export const formattedNum = (number, usd = false, acceptNegatives = false) => {
   }
 
   if (num > 1000) {
-    return usd ? formatDollarAmount(num, 0) : Number(parseFloat(num).toFixed(0)).toLocaleString()
+    return usd
+      ? '$' + Number(parseFloat(num).toFixed(0)).toLocaleString()
+      : '' + Number(parseFloat(num).toFixed(0)).toLocaleString()
   }
 
   if (usd) {
     if (num < 0.1) {
-      return formatDollarAmount(num, 4)
+      return '$' + Number(parseFloat(num).toFixed(4))
     } else {
-      return formatDollarAmount(num, 2)
+      let usdString = priceFormatter.format(num)
+      return '$' + usdString.slice(1, usdString.length)
     }
   }
 
-  return Number(parseFloat(num).toFixed(5)).toLocaleString()
+  return Number(parseFloat(num).toFixed(5))
 }
 
 export function rawPercent(percentRaw) {

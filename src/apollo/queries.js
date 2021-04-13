@@ -3,7 +3,7 @@ import { FACTORY_ADDRESS, BUNDLE_ID } from '../constants'
 
 export const SUBGRAPH_HEALTH = gql`
   query health {
-    indexingStatusForCurrentVersion(subgraphName: "uniswap/uniswap-v2") {
+    indexingStatusForCurrentVersion(subgraphName: "ss-sonic/dfyn") {
       synced
       health
       chains {
@@ -67,8 +67,8 @@ export const GET_BLOCKS = (timestamps) => {
     return `t${timestamp}:blocks(first: 1, orderBy: timestamp, orderDirection: desc, where: { timestamp_gt: ${timestamp}, timestamp_lt: ${
       timestamp + 600
     } }) {
-      number
-    }`
+    number
+  }`
   })
   queryString += '}'
   return gql(queryString)
@@ -652,7 +652,7 @@ const PairFields = `
 
 export const PAIRS_CURRENT = gql`
   query pairs {
-    pairs(first: 200, orderBy: reserveUSD, orderDirection: desc) {
+    pairs(first: 200, orderBy: trackedReserveETH, orderDirection: desc) {
       id
     }
   }
@@ -696,7 +696,7 @@ export const MINING_POSITIONS = (account) => {
 export const PAIRS_BULK = gql`
   ${PairFields}
   query pairs($allPairs: [Bytes]!) {
-    pairs(first: 500, where: { id_in: $allPairs }, orderBy: trackedReserveETH, orderDirection: desc) {
+    pairs(where: { id_in: $allPairs }, orderBy: trackedReserveETH, orderDirection: desc) {
       ...PairFields
     }
   }
@@ -734,6 +734,17 @@ export const TOKEN_CHART = gql`
       dailyVolumeETH
       dailyVolumeToken
       dailyVolumeUSD
+      # mostLiquidPairs {
+      #   id
+      #   token0 {
+      #     id
+      #     derivedETH
+      #   }
+      #   token1 {
+      #     id
+      #     derivedETH
+      #   }
+      # }
     }
   }
 `

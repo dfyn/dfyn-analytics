@@ -9,12 +9,13 @@ import { CustomLink } from '../Link'
 import Row from '../Row'
 import { Divider } from '..'
 
-import { formattedNum, formattedPercent } from '../../utils'
+import { formattedNum, formattedPercent, isAddress } from '../../utils'
 import { useMedia } from 'react-use'
 import { withRouter } from 'react-router-dom'
 import { TOKEN_BLACKLIST } from '../../constants'
 import FormattedName from '../FormattedName'
 import { TYPE } from '../../Theme'
+import { useAllTokensLogo } from '../../contexts/Application'
 
 dayjs.extend(utc)
 
@@ -134,6 +135,8 @@ function TopTokenList({ tokens, itemMax = 10, useTracked = false }) {
   const below680 = useMedia('(max-width: 680px)')
   const below600 = useMedia('(max-width: 600px)')
 
+  const fetchedTokens = useAllTokensLogo()
+
   useEffect(() => {
     setMaxPage(1) // edit this to do modular
     setPage(1)
@@ -176,13 +179,13 @@ function TopTokenList({ tokens, itemMax = 10, useTracked = false }) {
     )
   }, [formattedTokens, itemMax, page, sortDirection, sortedColumn])
 
-  const ListItem = ({ item, index }) => {
+  const ListItem = ({ item, index, path }) => {
     return (
       <DashGrid style={{ height: '48px' }} focus={true}>
         <DataText area="name" fontWeight="500">
           <Row>
             {!below680 && <div style={{ marginRight: '1rem', width: '10px' }}>{index}</div>}
-            <TokenLogo address={item.id} />
+            <TokenLogo address={item.id} path={path} />
             <CustomLink style={{ marginLeft: '16px', whiteSpace: 'nowrap' }} to={'/token/' + item.id}>
               <FormattedName
                 text={below680 ? item.symbol : item.name}
@@ -297,9 +300,20 @@ function TopTokenList({ tokens, itemMax = 10, useTracked = false }) {
       <List p={0}>
         {filteredList &&
           filteredList.map((item, index) => {
+            let token = fetchedTokens?.filter((t) => t?.address?.toLowerCase() === item?.id.toLowerCase())
+            let path
+            if (token.length > 0) {
+              token = token[0]
+              path = token.logoURI
+            } else {
+              path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
+                item.id
+              )}/logo.png`
+            }
+
             return (
               <div key={index}>
-                <ListItem key={index} index={(page - 1) * itemMax + index + 1} item={item} />
+                <ListItem key={index} index={(page - 1) * itemMax + index + 1} item={item} path={path} />
                 <Divider />
               </div>
             )
