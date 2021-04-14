@@ -49,6 +49,7 @@ function GlobalPage() {
   const allPairs = useAllPairData()
   const allTokens = useAllTokenData()
   const transactions = useGlobalTransactions()
+
   const { totalLiquidityUSD, oneDayVolumeUSD, volumeChangeUSD, liquidityChangeUSD } = useGlobalData()
 
   // breakpoints
@@ -61,6 +62,31 @@ function GlobalPage() {
       top: 0,
     })
   }, [])
+
+  /*console.log('tx', transactions)
+
+  const mergedTx = Object.keys(transactions ? transactions : {}).reduce(
+    (acc, key) => [...acc, ...transactions[key]],
+    []
+  )
+
+  console.log('mergedTx', mergedTx)
+
+  var json = mergedTx
+  var fields = Object.keys(json[0] ? json[0] : {})
+  var replacer = function (key, value) {
+    return value === null ? '' : value
+  }
+  var csv = json.map(function (row) {
+    return fields
+      .map(function (fieldName) {
+        return JSON.stringify(row[fieldName], replacer)
+      })
+      .join(',')
+  })
+  csv.unshift(fields.join(',')) // add header column
+  csv = csv.join('\r\n')
+  console.log('csv', csv)*/
 
   return (
     <PageWrapper>

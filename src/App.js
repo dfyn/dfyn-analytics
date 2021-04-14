@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import styled from 'styled-components'
 import { ApolloProvider } from 'react-apollo'
 import { client } from './apollo/client'
@@ -81,7 +81,7 @@ const WarningBanner = styled.div`
  */
 const LayoutWrapper = ({ children, savedOpen, setSavedOpen }) => {
   return (
-    <>
+    <Fragment>
       <ContentWrapper open={savedOpen}>
         <SideNav />
         <Center id="center">{children}</Center>
@@ -89,7 +89,7 @@ const LayoutWrapper = ({ children, savedOpen, setSavedOpen }) => {
           <PinnedData open={savedOpen} setSavedOpen={setSavedOpen} />
         </Right>
       </ContentWrapper>
-    </>
+    </Fragment>
   )
 }
 
@@ -101,12 +101,6 @@ function App() {
   const globalData = useGlobalData()
   const globalChartData = useGlobalChartData()
   const [latestBlock, headBlock] = useLatestBlocks()
-
-  console.log({
-    headBlock,
-    latestBlock,
-    BLOCK_DIFFERENCE_THRESHOLD,
-  })
 
   // show warning
   const showWarning = headBlock && latestBlock ? headBlock - latestBlock > BLOCK_DIFFERENCE_THRESHOLD : false
@@ -183,25 +177,25 @@ function App() {
                 }}
               />
 
-              <Route path="/home">
+              <Route exact path="/home">
                 <LayoutWrapper savedOpen={savedOpen} setSavedOpen={setSavedOpen}>
                   <GlobalPage />
                 </LayoutWrapper>
               </Route>
 
-              <Route path="/tokens">
+              <Route exact path="/tokens">
                 <LayoutWrapper savedOpen={savedOpen} setSavedOpen={setSavedOpen}>
                   <AllTokensPage />
                 </LayoutWrapper>
               </Route>
 
-              <Route path="/pairs">
+              <Route exact path="/pairs">
                 <LayoutWrapper savedOpen={savedOpen} setSavedOpen={setSavedOpen}>
                   <AllPairsPage />
                 </LayoutWrapper>
               </Route>
 
-              <Route path="/accounts">
+              <Route exact path="/accounts">
                 <LayoutWrapper savedOpen={savedOpen} setSavedOpen={setSavedOpen}>
                   <AccountLookup />
                 </LayoutWrapper>
