@@ -12,15 +12,10 @@ import UserContextProvider from './contexts/User'
 import App from './App'
 
 // initialize GA
-const GOOGLE_ANALYTICS_ID = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
+const GOOGLE_ANALYTICS_ID = "UA-192052050-1"
 
 if (typeof GOOGLE_ANALYTICS_ID === 'string') {
-  ReactGA.initialize(GOOGLE_ANALYTICS_ID, {
-    gaOptions: {
-      storage: 'none',
-      storeGac: false,
-    },
-  })
+  ReactGA.initialize(GOOGLE_ANALYTICS_ID)
   ReactGA.set({
     anonymizeIp: true,
     customBrowserType: !isMobile
@@ -32,6 +27,7 @@ if (typeof GOOGLE_ANALYTICS_ID === 'string') {
 } else {
   ReactGA.initialize('test', { testMode: true, debug: true })
 }
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 function ContextProviders({ children }) {
   return (

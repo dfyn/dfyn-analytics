@@ -77,13 +77,13 @@ function reducer(state, { type, payload }) {
       }
     }
 
-    case UPDATED_SUPPORTED_TOKENS: {
-      const { supportedTokens } = payload
-      return {
-        ...state,
-        [SUPPORTED_TOKENS]: supportedTokens,
-      }
-    }
+    // case UPDATED_SUPPORTED_TOKENS: {
+    //   const { supportedTokens } = payload
+    //   return {
+    //     ...state,
+    //     [SUPPORTED_TOKENS]: supportedTokens,
+    //   }
+    // }
 
     case UPDATED_FETCHED_TOKENS: {
       const { allFetchedTokens } = payload

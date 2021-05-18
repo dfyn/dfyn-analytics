@@ -4,7 +4,7 @@ import { HttpLink } from 'apollo-link-http'
 
 export const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://api.thegraph.com/subgraphs/name/ss-sonic/dfyn',
+    uri: 'https://api.thegraph.com/subgraphs/name/ss-sonic/dfyn-v4',
   }),
   cache: new InMemoryCache(),
   shouldBatch: true,
