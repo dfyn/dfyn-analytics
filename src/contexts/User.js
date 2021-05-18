@@ -200,14 +200,14 @@ export function useUserSnapshots(account) {
   useEffect(() => {
     async function fetchData() {
       try {
-        let skip = 0
+        let timestamp = 0
         let allResults = []
         let found = false
         while (!found) {
           let result = await client.query({
             query: USER_HISTORY,
             variables: {
-              skip: skip,
+              timestamp: timestamp,
               user: account,
             },
             fetchPolicy: 'cache-first',
@@ -216,7 +216,7 @@ export function useUserSnapshots(account) {
           if (result.data.liquidityPositionSnapshots.length < 1000) {
             found = true
           } else {
-            skip += 1000
+            timestamp = result.data.liquidityPositionSnapshots[result.data.liquidityPositionSnapshots.length - 1].timestamp
           }
         }
         if (allResults) {
