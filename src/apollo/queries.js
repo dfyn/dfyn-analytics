@@ -250,8 +250,8 @@ export const FIRST_SNAPSHOT = gql `
 `
 
 export const USER_HISTORY = gql `
-  query snapshots($user: Bytes!, $skip: Int!) {
-    liquidityPositionSnapshots(first: 1000, skip: $skip, where: { user: $user }) {
+query snapshots($user: Bytes!, $timestamp: Int!) {
+  liquidityPositionSnapshots(first: 1000,orderBy: timestamp,orderDirection: asc, where: {timestamp_gte:	$timestamp, user: $user }) {
       timestamp
       reserveUSD
       liquidityTokenBalance
