@@ -1,9 +1,12 @@
 import gql from 'graphql-tag'
-import { FACTORY_ADDRESS, BUNDLE_ID } from '../constants'
+import {
+  FACTORY_ADDRESS,
+  BUNDLE_ID
+} from '../constants'
 
-export const SUBGRAPH_HEALTH = gql`
+export const SUBGRAPH_HEALTH = gql `
   query health {
-    indexingStatusForCurrentVersion(subgraphName: "ss-sonic/dfyn") {
+    indexingStatusForCurrentVersion(subgraphName: "ss-sonic/dfyn-v4") {
       synced
       health
       chains {
@@ -18,7 +21,7 @@ export const SUBGRAPH_HEALTH = gql`
   }
 `
 
-export const V1_DATA_QUERY = gql`
+export const V1_DATA_QUERY = gql `
   query uniswap($date: Int!, $date2: Int!) {
     current: uniswap(id: "1") {
       totalVolumeUSD
@@ -46,7 +49,7 @@ export const V1_DATA_QUERY = gql`
   }
 `
 
-export const GET_BLOCK = gql`
+export const GET_BLOCK = gql `
   query blocks($timestampFrom: Int!, $timestampTo: Int!) {
     blocks(
       first: 1
@@ -114,7 +117,7 @@ export const PRICES_BY_BLOCK = (tokenAddress, blocks) => {
   return gql(queryString)
 }
 
-export const TOP_LPS_PER_PAIRS = gql`
+export const TOP_LPS_PER_PAIRS = gql `
   query lps($pair: Bytes!) {
     liquidityPositions(where: { pair: $pair }, orderBy: liquidityTokenBalance, orderDirection: desc, first: 10) {
       user {
@@ -175,16 +178,16 @@ export const SHARE_VALUE = (pairAddress, blocks) => {
 }
 
 export const ETH_PRICE = (block) => {
-  const queryString = block
-    ? `
+  const queryString = block ?
+    `
     query bundles {
       bundles(where: { id: ${BUNDLE_ID} } block: {number: ${block}}) {
         id
         ethPrice
       }
     }
-  `
-    : ` query bundles {
+  ` :
+    ` query bundles {
       bundles(where: { id: ${BUNDLE_ID} }) {
         id
         ethPrice
@@ -205,7 +208,7 @@ export const USER = (block, account) => {
   return gql(queryString)
 }
 
-export const USER_MINTS_BUNRS_PER_PAIR = gql`
+export const USER_MINTS_BUNRS_PER_PAIR = gql `
   query events($user: Bytes!, $pair: Bytes!) {
     mints(where: { to: $user, pair: $pair }) {
       amountUSD
@@ -238,7 +241,7 @@ export const USER_MINTS_BUNRS_PER_PAIR = gql`
   }
 `
 
-export const FIRST_SNAPSHOT = gql`
+export const FIRST_SNAPSHOT = gql `
   query snapshots($user: Bytes!) {
     liquidityPositionSnapshots(first: 1, where: { user: $user }, orderBy: timestamp, orderDirection: asc) {
       timestamp
@@ -246,7 +249,7 @@ export const FIRST_SNAPSHOT = gql`
   }
 `
 
-export const USER_HISTORY = gql`
+export const USER_HISTORY = gql `
   query snapshots($user: Bytes!, $skip: Int!) {
     liquidityPositionSnapshots(first: 1000, skip: $skip, where: { user: $user }) {
       timestamp
@@ -273,7 +276,7 @@ export const USER_HISTORY = gql`
   }
 `
 
-export const USER_POSITIONS = gql`
+export const USER_POSITIONS = gql `
   query liquidityPositions($user: Bytes!) {
     liquidityPositions(where: { user: $user }) {
       pair {
@@ -298,7 +301,7 @@ export const USER_POSITIONS = gql`
   }
 `
 
-export const USER_TRANSACTIONS = gql`
+export const USER_TRANSACTIONS = gql `
   query transactions($user: Bytes!) {
     mints(orderBy: timestamp, orderDirection: desc, where: { to: $user }) {
       id
@@ -369,7 +372,7 @@ export const USER_TRANSACTIONS = gql`
   }
 `
 
-export const PAIR_CHART = gql`
+export const PAIR_CHART = gql `
   query pairDayDatas($pairAddress: Bytes!, $skip: Int!) {
     pairDayDatas(first: 1000, skip: $skip, orderBy: date, orderDirection: asc, where: { pairAddress: $pairAddress }) {
       id
@@ -382,7 +385,7 @@ export const PAIR_CHART = gql`
   }
 `
 
-export const PAIR_DAY_DATA = gql`
+export const PAIR_DAY_DATA = gql `
   query pairDayDatas($pairAddress: Bytes!, $date: Int!) {
     pairDayDatas(first: 1, orderBy: date, orderDirection: desc, where: { pairAddress: $pairAddress, date_lt: $date }) {
       id
@@ -419,7 +422,7 @@ export const PAIR_DAY_DATA_BULK = (pairs, startTimestamp) => {
   return gql(queryString)
 }
 
-export const GLOBAL_CHART = gql`
+export const GLOBAL_CHART = gql `
   query uniswapDayDatas($startTime: Int!, $skip: Int!) {
     uniswapDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
       id
@@ -451,7 +454,7 @@ export const GLOBAL_DATA = (block) => {
   return gql(queryString)
 }
 
-export const GLOBAL_TXNS = gql`
+export const GLOBAL_TXNS = gql `
   query transactions {
     transactions(first: 100, orderBy: timestamp, orderDirection: desc) {
       mints(orderBy: timestamp, orderDirection: desc) {
@@ -522,7 +525,7 @@ export const GLOBAL_TXNS = gql`
   }
 `
 
-export const ALL_TOKENS = gql`
+export const ALL_TOKENS = gql `
   query tokens($skip: Int!) {
     tokens(first: 500, skip: $skip) {
       id
@@ -533,7 +536,7 @@ export const ALL_TOKENS = gql`
   }
 `
 
-export const TOKEN_SEARCH = gql`
+export const TOKEN_SEARCH = gql `
   query tokens($value: String, $id: String) {
     asSymbol: tokens(where: { symbol_contains: $value }, orderBy: totalLiquidity, orderDirection: desc) {
       id
@@ -556,7 +559,7 @@ export const TOKEN_SEARCH = gql`
   }
 `
 
-export const PAIR_SEARCH = gql`
+export const PAIR_SEARCH = gql `
   query pairs($tokens: [Bytes]!, $id: String) {
     as0: pairs(where: { token0_in: $tokens }) {
       id
@@ -600,7 +603,7 @@ export const PAIR_SEARCH = gql`
   }
 `
 
-export const ALL_PAIRS = gql`
+export const ALL_PAIRS = gql `
   query pairs($skip: Int!) {
     pairs(first: 500, skip: $skip, orderBy: trackedReserveETH, orderDirection: desc) {
       id
@@ -650,7 +653,7 @@ const PairFields = `
   }
 `
 
-export const PAIRS_CURRENT = gql`
+export const PAIRS_CURRENT = gql `
   query pairs {
     pairs(first: 200, orderBy: trackedReserveETH, orderDirection: desc) {
       id
@@ -693,7 +696,7 @@ export const MINING_POSITIONS = (account) => {
   return gql(queryString)
 }
 
-export const PAIRS_BULK = gql`
+export const PAIRS_BULK = gql `
   ${PairFields}
   query pairs($allPairs: [Bytes]!) {
     pairs(where: { id_in: $allPairs }, orderBy: trackedReserveETH, orderDirection: desc) {
@@ -722,7 +725,7 @@ export const PAIRS_HISTORICAL_BULK = (block, pairs) => {
   return gql(queryString)
 }
 
-export const TOKEN_CHART = gql`
+export const TOKEN_CHART = gql `
   query tokenDayDatas($tokenAddr: String!, $skip: Int!) {
     tokenDayDatas(first: 1000, skip: $skip, orderBy: date, orderDirection: asc, where: { token: $tokenAddr }) {
       id
@@ -763,7 +766,7 @@ const TokenFields = `
   }
 `
 
-export const TOKENS_CURRENT = gql`
+export const TOKENS_CURRENT = gql `
   ${TokenFields}
   query tokens {
     tokens(first: 200, orderBy: tradeVolumeUSD, orderDirection: desc) {
@@ -802,7 +805,7 @@ export const TOKEN_DATA = (tokenAddress, block) => {
   return gql(queryString)
 }
 
-export const FILTERED_TRANSACTIONS = gql`
+export const FILTERED_TRANSACTIONS = gql `
   query($allPairs: [Bytes]!) {
     mints(first: 20, where: { pair_in: $allPairs }, orderBy: timestamp, orderDirection: desc) {
       transaction {
