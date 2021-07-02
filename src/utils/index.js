@@ -296,10 +296,10 @@ export const setThemeColor = (theme) => document.documentElement.style.setProper
 export const Big = (number) => new BigNumber(number)
 
 export const urls = {
-  showTransaction: (tx) => `https://explorer-mainnet.maticvigil.com/tx/${tx}/`,
-  showAddress: (address) => `https://explorer-mainnet.maticvigil.com/address/${address}/`,
-  showToken: (address) => `https://explorer-mainnet.maticvigil.com/tokens/${address}/`,
-  showBlock: (block) => `https://explorer-mainnet.maticvigil.com/blocks/${block}/`,
+  showTransaction: (tx) => `https://polygonscan.com/tx/${tx}/`,
+  showAddress: (address) => `https://polygonscan.com/address/${address}/`,
+  showToken: (address) => `https://polygonscan.com/token/${address}/`,
+  showBlock: (block) => `https://polygonscan.com/block/${block}/`,
 }
 
 export const formatTime = (unix) => {
