@@ -59,7 +59,7 @@ export default function TokenLogo({ address, path, header = false, size = '24px'
     address = '0xc011a72400e58ecd99ee497cf89e3775d4bd732f'
   }
 
-  if (address?.toLowerCase() === '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619') {
+  if (address?.toLowerCase() === '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15') {
     return (
       <StyledEthereumLogo size={size} {...rest}>
         <img

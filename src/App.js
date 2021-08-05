@@ -105,7 +105,7 @@ function App() {
 
   // show warning
   const showWarning = headBlock && latestBlock ? headBlock - latestBlock > BLOCK_DIFFERENCE_THRESHOLD : false
-
+  debugger
   return (
     <ApolloProvider client={client}>
       <AppWrapper>
@@ -117,12 +117,12 @@ function App() {
           </WarningWrapper>
         )}
         {latestBlock &&
-        globalData &&
-        Object.keys(globalData).length > 0 &&
-        globalChartData &&
-        Object.keys(globalChartData).length > 0 ? (
+          globalData &&
+          Object.keys(globalData).length > 0 &&
+          globalChartData &&
+          Object.keys(globalChartData).length > 0 ? (
           <BrowserRouter>
-          {/* <Route component={GoogleAnalyticsReporter} /> */}
+            {/* <Route component={GoogleAnalyticsReporter} /> */}
             <Switch>
               <Route
                 exacts
