@@ -879,6 +879,7 @@ export function useEthPrice() {
     async function checkForEthPrice() {
       if (!ethPrice) {
         let [newPrice, oneDayPrice, priceChange] = await getEthPrice()
+        debugger
         updateEthPrice(newPrice, oneDayPrice, priceChange)
       }
     }
@@ -934,7 +935,7 @@ export function useTopLps() {
             if (results) {
               return results.liquidityPositions
             }
-          } catch (e) {}
+          } catch (e) { }
         })
       )
 
