@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { isAddress } from '../../utils/index.js'
-import EthereumLogo from '../../assets/eth.png'
+import OKTLogo from '../../assets/okt.png'
 import { useAllTokensLogo } from '../../contexts/Application.js'
 
 const BAD_IMAGES = {}
@@ -63,7 +63,7 @@ export default function TokenLogo({ address, path, header = false, size = '24px'
     return (
       <StyledEthereumLogo size={size} {...rest}>
         <img
-          src={EthereumLogo}
+          src={OKTLogo}
           style={{
             boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.075)',
             borderRadius: '24px',
