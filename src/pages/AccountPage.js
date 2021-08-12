@@ -168,7 +168,7 @@ function AccountPage({ account }) {
             <BasicLink to="/accounts">{'Accounts '}</BasicLink>→{' '}
             <Link
               lineHeight={'145.23%'}
-              href={'https://https://www.oklink.com/okexchain/address/' + account}
+              href={'https://www.oklink.com/okexchain/address/' + account}
               target="_blank"
             >
               {' '}
