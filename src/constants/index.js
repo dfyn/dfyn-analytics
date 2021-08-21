@@ -24,6 +24,10 @@ export const OVERVIEW_TOKEN_BLACKLIST = [
   '0xc3761eb917cd790b30dad99f6cc5b4ff93c4f9ea',
   '0xe31debd7abff90b06bca21010dd860d8701fd901',
   '0xfc989fbb6b3024de5ca0144dc23c18a063942ac1',
+
+  '0xd50dc82b44ccb96eb05919faad54a704df91daf0', //SAILROMOON
+  '0xc4ef5d17bfb13209c487d898fd8b24cd807835c5', //WNDR
+  '0x5227f8773b9122310380b59e335cde26166910df', //xICE
 ]
 
 export const TOKEN_BLACKLIST = [
@@ -34,6 +38,9 @@ export const TOKEN_BLACKLIST = [
   '0xf4eda77f0b455a12f3eb44f8653835f377e36b76',
   '0x93b2fff814fcaeffb01406e80b4ecd89ca6a021b',
 
+  '0xd50dc82b44ccb96eb05919faad54a704df91daf0', //SAILROMOON
+  '0xc4ef5d17bfb13209c487d898fd8b24cd807835c5', //WNDR
+  '0x5227f8773b9122310380b59e335cde26166910df', //xICE
   // rebass tokens
   '0x9ea3b5b4ec044b70375236a281986106457b20ef',
   '0x05934eba98486693aaec2d00b0e9ce918e37dc3f',
