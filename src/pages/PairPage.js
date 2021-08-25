@@ -38,6 +38,7 @@ import FormattedName from '../components/FormattedName'
 import { useListedTokens } from '../contexts/Application'
 import HoverText from '../components/HoverText'
 import { UNTRACKED_COPY, PAIR_BLACKLIST, BLOCKED_WARNINGS } from '../constants'
+import IntoTheBlock from '../components/IntoTheBlock'
 
 const DashboardWrapper = styled.div`
   width: 100%;
@@ -203,9 +204,10 @@ function PairPage({ pairAddress, history }) {
             <TYPE.light style={{ textAlign: 'center' }}>
               {BLOCKED_WARNINGS[pairAddress] ?? `This pair is not supported.`}
             </TYPE.light>
-            <Link external={true} href={'https://explorer.matic.network/address/' + pairAddress}>{`More about ${shortenAddress(
-              pairAddress
-            )}`}</Link>
+            <Link
+              external={true}
+              href={'https://explorer.matic.network/address/' + pairAddress}
+            >{`More about ${shortenAddress(pairAddress)}`}</Link>
           </AutoColumn>
         </BlockedMessageWrapper>
       </BlockedWrapper>
@@ -431,6 +433,16 @@ function PairPage({ pairAddress, history }) {
                   />
                 </Panel>
               </PanelWrapper>
+              <TYPE.main fontSize={'1.125rem'} style={{ marginTop: '3rem' }}>
+                IntoTheBlock
+              </TYPE.main>{' '}
+              <Panel
+                style={{
+                  marginTop: '1.5rem',
+                }}
+              >
+                <IntoTheBlock pairAddress={pairAddress} />
+              </Panel>
               <TYPE.main fontSize={'1.125rem'} style={{ marginTop: '3rem' }}>
                 Transactions
               </TYPE.main>{' '}
