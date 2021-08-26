@@ -49,3 +49,15 @@
   box-shadow: none;
 }
 
+.night-mode .itb-widget .defi-card{
+  border: 1px solid rgb(64, 68, 79) !important;
+}
+
+@media only screen and (max-width: 651px) {
+  .charts-container{
+    flex-direction: column;
+  }
+  .take-full-width{
+    width: 100% !important;
+  }
+}

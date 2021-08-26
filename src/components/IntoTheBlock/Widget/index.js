@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import './widget-overrides.css'
 
-const HooksExample = (props) => {
-  let { pairAddress, onPairNotSupported } = props
+const HooksExample = ({ pairAddress, onPairNotSupported }) => {
   useEffect(() => {
     if (window.itbWidgetInit) {
       window.itbWidgetInit({
@@ -28,20 +27,22 @@ const HooksExample = (props) => {
 
   return (
     <div className="widget-container">
+      <div data-target="itb-widget" data-type="protocol-roi-calculator" className="full-width"></div>
       <div className="charts-container">
-        <div data-target="itb-widget" data-type="protocol-fees-per-liquidity"></div>
-        <div data-target="itb-widget" data-type="protocol-transactions-breakdown"></div>
+        <div data-target="itb-widget" data-type="protocol-fees-per-liquidity" className="take-full-width"></div>
+        <div data-target="itb-widget" data-type="protocol-transactions-breakdown" className="take-full-width"></div>
         <div
           data-target="itb-widget"
           data-type="protocol-liquidity-variation"
           data-options='{ "pairTokenIndex": 0 }'
+          className="take-full-width"
         ></div>
         <div
           data-target="itb-widget"
           data-type="protocol-liquidity-variation"
           data-options='{ "pairTokenIndex": 1 }'
+          className="take-full-width"
         ></div>
-        <div data-target="itb-widget" data-type="protocol-roi-calculator" className="full-width"></div>
       </div>
       <div className="footer">
         <div data-target="itb-widget" data-type="call-to-action"></div>
