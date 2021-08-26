@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import './widget-overrides.css'
 
 const HooksExample = (props) => {
+  let { pairAddress, onPairNotSupported } = props
   useEffect(() => {
     if (window.itbWidgetInit) {
       window.itbWidgetInit({
@@ -11,19 +12,19 @@ const HooksExample = (props) => {
             series: ['#8c6651'],
           },
           protocol: 'dfyn_polygon',
-          pairAddress: props.pairAddress,
+          pairAddress: pairAddress,
           granularity: 'hourly',
           loader: true,
           hideNavigator: true,
           events: {
             onPairNotSupported: () => {
-              props.onPairNotSupported(true)
+              onPairNotSupported(true)
             },
           },
         },
       })
     }
-  }, [props.pairAddress])
+  }, [pairAddress, onPairNotSupported])
 
   return (
     <div className="widget-container">
