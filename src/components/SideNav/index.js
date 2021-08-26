@@ -169,6 +169,11 @@ function SideNav({ history }) {
               </Link>
             </HeaderText>
             <HeaderText>
+              <Link href="https://defipulse.com/dfyn-network" target="_blank">
+                DeFi Pulse
+              </Link>
+            </HeaderText>
+            <HeaderText>
               <Link href="https://t.me/Dfyn_HQ" target="_blank">
                 Telegram
               </Link>
