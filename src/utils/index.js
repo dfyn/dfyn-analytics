@@ -42,16 +42,14 @@ export function getPoolLink(token0Address, token1Address = null, remove = false)
     return (
       `https://exchange.dfyn.network/#/` +
       (remove ? `remove` : `add`) +
-      `/${
-        token0Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token0Address
+      `/${token0Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token0Address
       }/${'ETH'}`
     )
   } else {
     return (
       `https://exchange.dfyn.network/#/` +
       (remove ? `remove` : `add`) +
-      `/${token0Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token0Address}/${
-        token1Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token1Address
+      `/${token0Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token0Address}/${token1Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token1Address
       }`
     )
   }
@@ -61,11 +59,9 @@ export function getSwapLink(token0Address, token1Address = null) {
   if (!token1Address) {
     return `https://exchange.dfyn.network/#/swap?inputCurrency=${token0Address}`
   } else {
-    return `https://exchange.dfyn.network/#/swap?inputCurrency=${
-      token0Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token0Address
-    }&outputCurrency=${
-      token1Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token1Address
-    }`
+    return `https://exchange.dfyn.network/#/swap?inputCurrency=${token0Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token0Address
+      }&outputCurrency=${token1Address?.toLowerCase() === '0x4c28f48448720e9000907bc2611f73022fdce1fa' ? 'ETH' : token1Address
+      }`
   }
 }
 
@@ -305,10 +301,10 @@ export const setThemeColor = (theme) => document.documentElement.style.setProper
 export const Big = (number) => new BigNumber(number)
 
 export const urls = {
-  showTransaction: (tx) => `https://explorer-mainnet.maticvigil.com/tx/${tx}/`,
-  showAddress: (address) => `https://explorer-mainnet.maticvigil.com/address/${address}/`,
-  showToken: (address) => `https://explorer-mainnet.maticvigil.com/tokens/${address}/`,
-  showBlock: (block) => `https://explorer-mainnet.maticvigil.com/blocks/${block}/`,
+  showTransaction: (tx) => `https://polygonscan.com/tx/${tx}/`,
+  showAddress: (address) => `https://polygonscan.com/address/${address}/`,
+  showToken: (address) => `https://polygonscan.com/tokens/${address}/`,
+  showBlock: (block) => `https://polygonscan.com/blocks/${block}/`,
 }
 
 export const formatTime = (unix) => {

@@ -179,7 +179,7 @@ function TokenPage({ address, history }) {
             <TYPE.light style={{ textAlign: 'center' }}>
               {BLOCKED_WARNINGS[address] ?? `This token is not supported.`}
             </TYPE.light>
-            <Link external={true} href={'https://explorer.matic.network/address/' + address}>{`More about ${shortenAddress(
+            <Link external={true} href={'https://polygonscan.com/address/' + address}>{`More about ${shortenAddress(
               address
             )}`}</Link>
           </AutoColumn>
@@ -207,7 +207,7 @@ function TokenPage({ address, history }) {
               style={{ width: 'fit-content' }}
               color={backgroundColor}
               external
-              href={'https://explorer-mainnet.maticvigil.com/address/' + address}
+              href={'https://polygonscan.com/address/' + address}
             >
               <Text style={{ marginLeft: '.15rem' }} fontSize={'14px'} fontWeight={400}>
                 ({address.slice(0, 8) + '...' + address.slice(36, 42)})
@@ -420,7 +420,7 @@ function TokenPage({ address, history }) {
                     </AutoRow>
                   </Column>
                   <ButtonLight color={backgroundColor}>
-                    <Link color={backgroundColor} external href={'https://explorer.matic.network/address/' + address}>
+                    <Link color={backgroundColor} external href={'https://polygonscan.com/address/' + address}>
                       View on Explorer ↗
                     </Link>
                   </ButtonLight>
