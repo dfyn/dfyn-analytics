@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { isAddress } from '../../utils/index.js'
-import OKTLogo from '../../assets/okt.png'
+import FTMLogo from '../../assets/FTM.png'
 import { useAllTokensLogo } from '../../contexts/Application.js'
 
 const BAD_IMAGES = {}
@@ -59,11 +59,11 @@ export default function TokenLogo({ address, path, header = false, size = '24px'
     address = '0xc011a72400e58ecd99ee497cf89e3775d4bd732f'
   }
 
-  if (address?.toLowerCase() === '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15') {
+  if (address?.toLowerCase() === '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83') {
     return (
       <StyledEthereumLogo size={size} {...rest}>
         <img
-          src={OKTLogo}
+          src={FTMLogo}
           style={{
             boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.075)',
             borderRadius: '24px',

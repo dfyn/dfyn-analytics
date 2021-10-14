@@ -1,16 +1,10 @@
-import {
-  ApolloClient
-} from 'apollo-client'
-import {
-  InMemoryCache
-} from 'apollo-cache-inmemory'
-import {
-  HttpLink
-} from 'apollo-link-http'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
 
 export const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://graph.kkt.one/subgraphs/name/ss-sonic/dfyn-okex',
+    uri: 'https://api.thegraph.com/subgraphs/name/ss-sonic/dfyn-fantom-v1',
   }),
   cache: new InMemoryCache(),
   shouldBatch: true,
@@ -18,7 +12,7 @@ export const client = new ApolloClient({
 
 export const healthClient = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://graph.kkt.one/graphql',
+    uri: 'https://api.thegraph.com/index-node/graphql',
   }),
   cache: new InMemoryCache(),
   shouldBatch: true,
@@ -42,7 +36,7 @@ export const stakingClient = new ApolloClient({
 
 export const blockClient = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://graph.kkt.one/subgraphs/name/ss-sonic/ethereum-blocks',
+    uri: 'https://api.thegraph.com/subgraphs/name/matthewlilley/fantom-blocks',
   }),
   cache: new InMemoryCache(),
 })

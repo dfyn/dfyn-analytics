@@ -72,7 +72,7 @@ export default function Warning({ type, show, setShow, address }) {
                 fontWeight={500}
                 lineHeight={'145.23%'}
                 color={'#2172E5'}
-                href={'https://www.oklink.com/okexchain/address/' + address}
+                href={'https://ftmscan.com/address/' + address}
                 target="_blank"
               >
                 View {type === 'token' ? 'token' : 'pair'} contract on Explorer
@@ -92,7 +92,7 @@ export default function Warning({ type, show, setShow, address }) {
                 fontWeight={500}
                 lineHeight={'145.23%'}
                 color={'#2172E5'}
-                href={'https://www.oklink.com/okexchain/address/' + address}
+                href={'https://ftmscan.com/address/' + address}
                 target="_blank"
               >
                 View {type === 'token' ? 'token' : 'pair'} contract on Explorer

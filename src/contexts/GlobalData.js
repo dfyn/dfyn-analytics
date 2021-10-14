@@ -499,7 +499,6 @@ async function getGlobalData(ethPrice, oldEthPrice) {
       fetchPolicy: 'cache-first',
     })
     const twoWeekData = twoWeekResult.data.uniswapFactories[0]
-
     if (data && oneDayData && twoDayData && twoWeekData) {
       let [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
         data.totalVolumeUSD,
@@ -879,7 +878,7 @@ export function useEthPrice() {
     async function checkForEthPrice() {
       if (!ethPrice) {
         let [newPrice, oneDayPrice, priceChange] = await getEthPrice()
-        debugger
+        // debugger
         updateEthPrice(newPrice, oneDayPrice, priceChange)
       }
     }

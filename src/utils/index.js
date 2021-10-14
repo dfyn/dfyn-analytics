@@ -42,14 +42,14 @@ export function getPoolLink(token0Address, token1Address = null, remove = false)
     return (
       `https://exchange.dfyn.network/#/` +
       (remove ? `remove` : `add`) +
-      `/${token0Address?.toLowerCase() === '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15' ? 'OKT' : token0Address
-      }/${'OKT'}`
+      `/${token0Address?.toLowerCase() === '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' ? 'FTM' : token0Address
+      }/${'FTM'}`
     )
   } else {
     return (
       `https://exchange.dfyn.network/#/` +
       (remove ? `remove` : `add`) +
-      `/${token0Address?.toLowerCase() === '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15' ? 'OKT' : token0Address}/${token1Address?.toLowerCase() === '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15' ? 'OKT' : token1Address
+      `/${token0Address?.toLowerCase() === '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' ? 'FTM' : token0Address}/${token1Address?.toLowerCase() === '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' ? 'FTM' : token1Address
       }`
     )
   }
@@ -59,8 +59,8 @@ export function getSwapLink(token0Address, token1Address = null) {
   if (!token1Address) {
     return `https://exchange.dfyn.network/#/swap?inputCurrency=${token0Address}`
   } else {
-    return `https://exchange.dfyn.network/#/swap?inputCurrency=${token0Address?.toLowerCase() === '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15' ? 'OKT' : token0Address
-      }&outputCurrency=${token1Address?.toLowerCase() === '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15' ? 'OKT' : token1Address
+    return `https://exchange.dfyn.network/#/swap?inputCurrency=${token0Address?.toLowerCase() === '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' ? 'FTM' : token0Address
+      }&outputCurrency=${token1Address?.toLowerCase() === '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' ? 'FTM' : token1Address
       }`
   }
 }
@@ -301,11 +301,12 @@ export const setThemeColor = (theme) => document.documentElement.style.setProper
 export const Big = (number) => new BigNumber(number)
 
 export const urls = {
-  showTransaction: (tx) => `https://www.oklink.com/okexchain/tx/${tx}/`,
-  showAddress: (address) => `https://www.oklink.com/okexchain/address/${address}/`,
-  showToken: (address) => `https://www.oklink.com/okexchain/tokens/${address}/`,
-  showBlock: (block) => `https://www.oklink.com/okexchain/blocks/${block}/`,
+  showTransaction: (tx) => `https://ftmscan.com/tx/${tx}/`,
+  showAddress: (address) => `https://www.ftmscan.com/address/${address}/`,
+  showToken: (address) => `https://www.ftmscan.com/token/${address}/`,
+  showBlock: (block) => `https://ftmscan.com/block/${block}/`,
 }
+
 
 export const formatTime = (unix) => {
   const now = dayjs()
@@ -443,7 +444,6 @@ export const get2DayPercentChange = (valueNow, value24HoursAgo, value48HoursAgo)
   let previousChange = parseFloat(value24HoursAgo) - parseFloat(value48HoursAgo)
 
   const adjustedPercentChange = (parseFloat(currentChange - previousChange) / parseFloat(previousChange)) * 100
-
   if (isNaN(adjustedPercentChange) || !isFinite(adjustedPercentChange)) {
     return [currentChange, 0]
   }

@@ -47,7 +47,7 @@ export default function GlobalStats() {
               // }}
               style={{ position: 'relative' }}
             >
-              OKT Price: <Medium>{formattedEthPrice}</Medium>
+              FTM Price: <Medium>{formattedEthPrice}</Medium>
               {showPriceCard && <UniPrice />}
             </TYPE.main>
           )}

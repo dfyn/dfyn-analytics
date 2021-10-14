@@ -203,7 +203,7 @@ function PairPage({ pairAddress, history }) {
             <TYPE.light style={{ textAlign: 'center' }}>
               {BLOCKED_WARNINGS[pairAddress] ?? `This pair is not supported.`}
             </TYPE.light>
-            <Link external={true} href={'https://www.oklink.com/okexchain/address/' + pairAddress}>{`More about ${shortenAddress(
+            <Link external={true} href={'https://ftmscan.com/address/' + pairAddress}>{`More about ${shortenAddress(
               pairAddress
             )}`}</Link>
           </AutoColumn>
@@ -501,7 +501,7 @@ function PairPage({ pairAddress, history }) {
                     <Link
                       color={backgroundColor}
                       external
-                      href={'https://www.oklink.com/okexchain/address/' + pairAddress}
+                      href={'https://ftmscan.com/address/' + pairAddress}
                     >
                       View on Explorer ↗
                     </Link>

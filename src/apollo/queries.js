@@ -6,7 +6,7 @@ import {
 
 export const SUBGRAPH_HEALTH = gql`
   query health {
-    indexingStatusForCurrentVersion(subgraphName: "ss-sonic/dfyn-okex") {
+    indexingStatusForCurrentVersion(subgraphName: "ss-sonic/dfyn-fantom-v1") {
       synced
       health
       chains {
